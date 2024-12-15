@@ -52,6 +52,22 @@ import {
   ProfileLoginSection,
   ProfileRegistrationSection,
 } from "./sections/profile-section"
+import { CssVarsProvider, extendTheme } from "@mui/joy/styles"
+
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        text: {
+          primary: "#000000",
+        },
+        neutral: {
+          plainColor: "var(--joy-palette-text-primary)",
+        },
+      },
+    },
+  },
+})
 
 export interface LoginSectionAdditionalProps {
   forgotPasswordURL?: CustomHref | string
@@ -492,132 +508,134 @@ export const UserAuthCard = ({
   }
 
   return (
-    <Card
-      className={className}
-      heading={
-        <h2 className={typographyStyle({ type: "regular", size: "small" })}>
-          {title}
-        </h2>
-      }
-      image={cardImage}
-      data-testid={`${flowProps.flowType}-auth-card`}
-    >
-      <div className={gridStyle({ gap: 32 })}>
-        {subtitle && <Message severity="default">{subtitle}</Message>}
-        <NodeMessages uiMessages={flow.ui.messages} />
-        <Divider />
+    <CssVarsProvider theme={theme}>
+      <Card
+        className={className}
+        heading={
+          <h2 className={typographyStyle({ type: "regular", size: "small" })}>
+            {title}
+          </h2>
+        }
+        image={cardImage}
+        data-testid={`${flowProps.flowType}-auth-card`}
+      >
+        <div className={gridStyle({ gap: 32 })}>
+          {subtitle && <Message severity="default">{subtitle}</Message>}
+          <NodeMessages uiMessages={flow.ui.messages} />
+          <Divider />
 
-        {$oidc && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              data-testid={`${flowProps.flowType}-flow-oidc`}
-            >
-              {$oidc}
-            </UserAuthForm>
-            <Divider />
-          </>
-        )}
+          {$oidc && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                data-testid={`${flowProps.flowType}-flow-oidc`}
+              >
+                {$oidc}
+              </UserAuthForm>
+              <Divider />
+            </>
+          )}
 
-        {$twoStep && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              data-testid={`${flowProps.flowType}-two-step`}
-            >
-              {$twoStep}
-            </UserAuthForm>
-          </>
-        )}
+          {$twoStep && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                data-testid={`${flowProps.flowType}-two-step`}
+              >
+                {$twoStep}
+              </UserAuthForm>
+            </>
+          )}
 
-        {canShowPasskey() && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              submitOnEnter={true}
-              onSubmit={onSubmit}
-              data-testid={"passkey-flow"}
-            >
-              {$passkey}
-            </UserAuthForm>
-          </>
-        )}
+          {canShowPasskey() && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                submitOnEnter={true}
+                onSubmit={onSubmit}
+                data-testid={"passkey-flow"}
+              >
+                {$passkey}
+              </UserAuthForm>
+            </>
+          )}
 
-        {$code && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              data-testid={`${flowProps.flowType}-flow-code`}
-            >
-              {$code}
-            </UserAuthForm>
-          </>
-        )}
+          {$code && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                data-testid={`${flowProps.flowType}-flow-code`}
+              >
+                {$code}
+              </UserAuthForm>
+            </>
+          )}
 
-        {$flow && !isTwoFactor() && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              submitOnEnter={true}
-              onSubmit={onSubmit}
-              data-testid={`${flowProps.flowType}-flow`}
-            >
-              {$flow}
-            </UserAuthForm>
-          </>
-        )}
+          {$flow && !isTwoFactor() && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                submitOnEnter={true}
+                onSubmit={onSubmit}
+                data-testid={`${flowProps.flowType}-flow`}
+              >
+                {$flow}
+              </UserAuthForm>
+            </>
+          )}
 
-        {isTwoFactor() && (
-          <>
-            <NodeMessages
-              nodes={filterNodesByGroups({
-                nodes: flow.ui.nodes,
-                groups: [
-                  "password",
-                  "webauthn",
-                  "passkey",
-                  "totp",
-                  "lookup_secret",
-                ],
-              })}
-            />
-            {twoFactorFlows()}
-          </>
-        )}
+          {isTwoFactor() && (
+            <>
+              <NodeMessages
+                nodes={filterNodesByGroups({
+                  nodes: flow.ui.nodes,
+                  groups: [
+                    "password",
+                    "webauthn",
+                    "passkey",
+                    "totp",
+                    "lookup_secret",
+                  ],
+                })}
+              />
+              {twoFactorFlows()}
+            </>
+          )}
 
-        {canShowPasswordless() && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              submitOnEnter={true}
-              onSubmit={onSubmit}
-              data-testid={"passwordless-flow"}
-              formFilterOverride={{
-                nodes: flow.ui.nodes,
-                groups: ["default", "webauthn"],
-                attributes: "hidden",
-              }}
-            >
-              {$passwordlessWebauthn}
-            </UserAuthForm>
-          </>
-        )}
+          {canShowPasswordless() && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                submitOnEnter={true}
+                onSubmit={onSubmit}
+                data-testid={"passwordless-flow"}
+                formFilterOverride={{
+                  nodes: flow.ui.nodes,
+                  groups: ["default", "webauthn"],
+                  attributes: "hidden",
+                }}
+              >
+                {$passwordlessWebauthn}
+              </UserAuthForm>
+            </>
+          )}
 
-        {canShowProfile() && (
-          <>
-            <UserAuthForm
-              flow={flow}
-              data-testid={`${flowProps.flowType}-flow-profile`}
-            >
-              {$profile}
-            </UserAuthForm>
-          </>
-        )}
+          {canShowProfile() && (
+            <>
+              <UserAuthForm
+                flow={flow}
+                data-testid={`${flowProps.flowType}-flow-profile`}
+              >
+                {$profile}
+              </UserAuthForm>
+            </>
+          )}
 
-        {showLoggedAccount && <LoggedInInfo flow={flow} />}
+          {showLoggedAccount && <LoggedInInfo flow={flow} />}
 
-        {message && MessageSection(message)}
-      </div>
-    </Card>
+          {message && MessageSection(message)}
+        </div>
+      </Card>
+    </CssVarsProvider>
   )
 }

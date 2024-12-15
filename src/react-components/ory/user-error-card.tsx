@@ -10,6 +10,22 @@ import { Card } from "../card"
 import { CodeBox } from "../codebox"
 import { Message } from "../message"
 import { FormattedMessage, useIntl } from "react-intl"
+import { CssVarsProvider, extendTheme } from "@mui/joy/styles"
+
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        text: {
+          primary: "#000000",
+        },
+        neutral: {
+          plainColor: "var(--joy-palette-text-primary)",
+        },
+      },
+    },
+  },
+})
 
 /**
  * UserErrorCardProps
@@ -78,56 +94,61 @@ export const UserErrorCard = ({
   }
 
   return (
-    <Card
-      className={className}
-      heading={
-        <h2 className={typographyStyle({ type: "regular", size: "small" })}>
-          {title}
-        </h2>
-      }
-      image={cardImage}
-      size="wide"
-    >
-      <div
-        className={gridStyle({ gap: 32, direction: "column" })}
-        data-testid="ui/error/message"
+    <CssVarsProvider theme={theme}>
+      <Card
+        className={className}
+        heading={
+          <h2 className={typographyStyle({ type: "regular", size: "small" })}>
+            {title}
+          </h2>
+        }
+        image={cardImage}
+        size="wide"
       >
-        {!is500 && (
-          <Message severity="error">
-            <FormattedMessage
-              id="error.description"
-              defaultMessage="An error occurred with the following message:"
-            />
-            &nbsp;
-            {err.reason}
+        <div
+          className={gridStyle({ gap: 32, direction: "column" })}
+          data-testid="ui/error/message"
+        >
+          {!is500 && (
+            <Message severity="error">
+              <FormattedMessage
+                id="error.description"
+                defaultMessage="An error occurred with the following message:"
+              />
+              &nbsp;
+              {err.reason}
+            </Message>
+          )}
+          <CodeBox data-testid="code-box" toggleText="Error details">
+            {JSON.stringify(error, null, 2)}
+          </CodeBox>
+          {contactSupportEmail && (
+            <Message className={colorSprinkle({ color: "foregroundMuted" })}>
+              <FormattedMessage
+                id="error.support-email-link"
+                description="A label and link below the error. The link href is 'mailto:{contactSupportEmail}'."
+                defaultMessage="If the problem persists, please contact <a>{contactSupportEmail}</a>"
+                values={{
+                  contactSupportEmail,
+                  a: (chunks) => (
+                    <ButtonLink href={`mailto:${contactSupportEmail}`}>
+                      &nbsp;{chunks}
+                    </ButtonLink>
+                  ),
+                }}
+              />
+            </Message>
+          )}
+          <Message>
+            <ButtonLink href={backUrl}>
+              <FormattedMessage
+                id="error.back-button"
+                defaultMessage="Go Back"
+              />
+            </ButtonLink>
           </Message>
-        )}
-        <CodeBox data-testid="code-box" toggleText="Error details">
-          {JSON.stringify(error, null, 2)}
-        </CodeBox>
-        {contactSupportEmail && (
-          <Message className={colorSprinkle({ color: "foregroundMuted" })}>
-            <FormattedMessage
-              id="error.support-email-link"
-              description="A label and link below the error. The link href is 'mailto:{contactSupportEmail}'."
-              defaultMessage="If the problem persists, please contact <a>{contactSupportEmail}</a>"
-              values={{
-                contactSupportEmail,
-                a: (chunks) => (
-                  <ButtonLink href={`mailto:${contactSupportEmail}`}>
-                    &nbsp;{chunks}
-                  </ButtonLink>
-                ),
-              }}
-            />
-          </Message>
-        )}
-        <Message>
-          <ButtonLink href={backUrl}>
-            <FormattedMessage id="error.back-button" defaultMessage="Go Back" />
-          </ButtonLink>
-        </Message>
-      </div>
-    </Card>
+        </div>
+      </Card>
+    </CssVarsProvider>
   )
 }

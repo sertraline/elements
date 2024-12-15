@@ -12,7 +12,10 @@ export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 export const Image = ({ header: title, className, ...props }: ImageProps) => {
   return (
-    <div className={cn(className, gridStyle({ gap: 4 }))}>
+    <div
+      className={cn(className, gridStyle({ gap: 4 }))}
+      style={{ alignItems: "center" }}
+    >
       {title && (
         <div className={typographyStyle({ size: "small", type: "regular" })}>
           {title}

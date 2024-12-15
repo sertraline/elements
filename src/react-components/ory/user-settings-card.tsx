@@ -28,6 +28,23 @@ import { WebAuthnSettingsSection } from "./sections/webauthn-settings-section"
 import { useIntl } from "react-intl"
 import { PasskeySettingsSection } from "./sections/passkey-settings-section"
 import { Divider } from "../divider"
+import { CssVarsProvider, extendTheme } from "@mui/joy/styles"
+import { Typography } from "@mui/joy"
+
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        text: {
+          primary: "#000000",
+        },
+        neutral: {
+          plainColor: "var(--joy-palette-text-primary)",
+        },
+      },
+    },
+  },
+})
 
 export type UserSettingsFlowType =
   | "profile"
@@ -154,18 +171,9 @@ export const UserSettingsCard = ({
   }
 
   return hasFlow ? (
-    <>
+    <CssVarsProvider theme={theme}>
       <div className={gridStyle({ gap: 32 })}>
-        {cardTitle && (
-          <h3
-            className={cn(
-              typographyStyle({ size: "headline26", type: "regular" }),
-              colorSprinkle({ color: "foregroundDefault" }),
-            )}
-          >
-            {cardTitle}
-          </h3>
-        )}
+        {cardTitle && <Typography>{cardTitle}</Typography>}
         <UserAuthForm
           flow={flow}
           onSubmit={onSubmit}
@@ -176,6 +184,6 @@ export const UserSettingsCard = ({
         </UserAuthForm>
       </div>
       <Divider fullWidth={false} className={dividerClassName} />
-    </>
+    </CssVarsProvider>
   ) : null
 }

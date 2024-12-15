@@ -88,7 +88,7 @@ export const defaultLightTheme: Theme = {
   fontFamilyMono: "JetBrainsMono",
   fontStyle: "normal",
   accent: {
-    def: "#3D53F5",
+    def: "#0b6bcb",
     muted: "#6475F7",
     emphasis: "#3142C4",
     disabled: "#E0E0E0",
@@ -118,7 +118,7 @@ export const defaultLightTheme: Theme = {
     emphasis: "#18A957",
   },
   border: {
-    def: "#EEEEEE",
+    def: "transparent",
   },
   text: {
     def: "#FFFFFF",
@@ -140,7 +140,7 @@ export const defaultDarkTheme: Theme = {
     def: "#6475f7",
     disabled: "#757575",
     muted: "#3142c4",
-    emphasis: "#3d53f5",
+    emphasis: "#0b6bcb",
     subtle: "#0c1131",
   },
   foreground: {
@@ -158,7 +158,7 @@ export const defaultDarkTheme: Theme = {
     subtle: "#221C56",
   },
   border: {
-    def: "#221956",
+    def: "transparent",
   },
   error: {
     def: "#e95c7b",

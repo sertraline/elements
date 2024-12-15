@@ -9,7 +9,7 @@ export const gridStyle = recipe({
     display: "flex",
     flexDirection: "column",
     gap: pxToRem(16),
-    overflow: "auto",
+    overflow: "hidden",
   },
   variants: {
     direction: {
